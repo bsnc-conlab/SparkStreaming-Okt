@@ -18,14 +18,6 @@ or manually :
 
 ### Project Architecture
 
-- Analysis:  Do Word Count use Spark Streaming
-- Config: 
-- Sql: 
-- StreamingConsumer: 
-- StreamingListner: 
-- StreamingLog: 
-- StreamingProducer: 
-
 **Note**
 To format Json to Java, it's using [Gson API](https://github.com/google/gson).
 

@@ -4,8 +4,6 @@ import org.apache.spark.sql.SparkSession
 
 object Sql {
   def SparkSql(msg: String) {
-    //val sqlContext = Config.SPARK_SQL_CONTEXT
-
     val sqlContext = SparkSession
       .builder()
       .master("local[2]")

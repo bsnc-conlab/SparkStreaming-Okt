@@ -13,7 +13,7 @@ object StreamingProducer {
 
     val producer = new KafkaProducer[String, String](configuration)
     val data = new ProducerRecord[String, String](topic, analyzed)
-
+    
     producer.send(data)
     producer.close()
 

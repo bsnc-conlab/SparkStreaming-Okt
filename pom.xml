@@ -25,6 +25,7 @@
 		<spark.version>2.4.4</spark.version>
 		<kafka.version>2.3.0</kafka.version>
 		<koreantxt.version>4.4</koreantxt.version>
+		<json4s.version>3.6.7</json4s.version>
 	</properties>
 
 	<dependencies>
@@ -41,12 +42,12 @@
 		</dependency>
 
 		<!-- spark -->
-
 		<dependency>
 			<groupId>org.apache.spark</groupId>
 			<artifactId>spark-core_2.11</artifactId>
 			<version>${spark.version}</version>
 		</dependency>
+		
 		<dependency>
 			<groupId>org.apache.spark</groupId>
 			<artifactId>spark-streaming_2.11</artifactId>
@@ -67,7 +68,6 @@
 		</dependency>
 
 		<!-- kakfa -->
-
 		<dependency>
 			<groupId>org.apache.kafka</groupId>
 			<artifactId>kafka_2.11</artifactId>
@@ -80,13 +80,18 @@
 		</dependency>
 
 		<!-- korean-text -->
-
 		<dependency>
 			<groupId>com.twitter.penguin</groupId>
 			<artifactId>korean-text</artifactId>
 			<version>${koreantxt.version}</version>
 		</dependency>
 
+		<!-- json4s -->
+		<dependency>
+			<groupId>org.json4s</groupId>
+			<artifactId>json4s-jackson_2.11</artifactId>
+			<version>${json4s.version}</version>
+		</dependency>
 
 		<!-- Test -->
 		<dependency>

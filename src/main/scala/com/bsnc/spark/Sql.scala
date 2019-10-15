@@ -1,6 +1,7 @@
 package com.bsnc.spark
 
 import org.apache.spark.sql.SparkSession
+import org.apache.spark.SparkContext
 
 object Sql {
   def SparkSql(msg: String) {
@@ -10,10 +11,13 @@ object Sql {
       .appName("Streaming-Consumer")
       .getOrCreate()
 
-    println(msg)
-    val rddDataSet = sqlContext.sparkContext.makeRDD(msg :: Nil)
-    val dataFrame = sqlContext.read.json(rddDataSet)
+    import sqlContext.implicits._
+    val dataSet = sqlContext.createDataset("""msg"""::Nil)
+    val data = sqlContext.read.json(dataSet)
+    data.show()
+    //val rddDataSet = sqlContext.sparkContext.makeRDD(msg :: Nil)
+    /*val dataFrame = sqlContext.read.json(Seq(msg).toDS)*/
 
-    dataFrame.show()
+    //data.show()
   }
 }

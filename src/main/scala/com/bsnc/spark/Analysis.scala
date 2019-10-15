@@ -1,17 +1,19 @@
 package com.bsnc.spark
 
 import scala.collection.mutable.ListBuffer
-import scala.util.parsing.json._
+
+import org.json4s.JObject
+import org.json4s.jackson.JsonMethods
 
 import com.twitter.penguin.korean.TwitterKoreanProcessor
 import com.twitter.penguin.korean.tokenizer.KoreanTokenizer.KoreanToken
 
 object Analysis {
   def wordAnalysis(msg: String) = {
-    val parsed = JSON.parseFull(msg)
+    val parsed = JsonMethods.parse(msg).asInstanceOf[JObject].values
     parsed match {
-      case Some(e) =>
-        val jsonMap = e.asInstanceOf[Map[String, String]]
+      case result =>
+        val jsonMap = result.asInstanceOf[Map[String, String]]
         val subject = jsonMap.get("subject").getOrElse()
         val from = jsonMap.get("from").getOrElse()
         val to = jsonMap.get("to").getOrElse()
@@ -20,9 +22,11 @@ object Analysis {
         val now = System.currentTimeMillis()
 
         val normalized: CharSequence = TwitterKoreanProcessor.normalize(data)
+        //한국어를 처리하는 예시입니닼ㅋㅋㅋㅋㅋ -> 한국어를 처리하는 예시입니다 ㅋㅋ
         val tokens: Seq[KoreanToken] = TwitterKoreanProcessor.tokenize(normalized)
+        //한국어를 처리하는 예시입니다 ㅋㅋ -> 한국어Noun, 를Josa, 처리Noun, 하는Verb, 예시Noun, 입Adjective, 니다Eomi ㅋㅋKoreanParticle
         val stemmed: Seq[KoreanToken] = TwitterKoreanProcessor.stem(tokens)
-
+        //한국어를 처리하는 예시입니다 ㅋㅋ -> 한국어Noun, 를Josa, 처리Noun, 하다Verb, 예시Noun, 이다Adjective, ㅋㅋKoreanParticle
         val wordMap = scala.collection.mutable.Map[String, Int]()
         val messagesList = new ListBuffer[String]()
 
@@ -32,24 +36,21 @@ object Analysis {
             wordMap.put(stemmed(i).text, cnt)
           }
         }
-        // List(한국어(Noun: 0, 3), 를(Josa: 3, 1),  (Space: 4, 1), 처리(Noun: 5, 2), 하다(Verb: 7, 2),  (Space: 9, 1), 예시(Noun: 10, 2), 이다(Adjective: 12, 3), ㅋㅋ(KoreanParticle: 15, 2),  (Space: 17, 1), #한국어(Hashtag: 18, 4))
 
         val strJson = new StringBuilder()
-
         strJson.append("[")
         for (key <- wordMap.keys) {
-          //strJson.append("{\"index\": " + "{\"_id\": \"" + now + "_" + from + "_" + to + "_" + key + "\"}}")
           strJson.append("{\"subject\": \"" + subject + "\", \"from\": \"" + from + "\", \"to\": \"" + to + "\" , \"date\": \"" + time + "\" ,")
           strJson.append("\"word\": \"" + key + "\", \"counts\": " + wordMap.get(key).getOrElse(0) + "}")
           strJson.append(",")
         }
-        strJson.delete(strJson.length-1, strJson.length)
+
+        strJson.delete(strJson.length - 1, strJson.length)
         strJson.append("]")
-        if (StreamingProducer.producer(strJson.toString()) == true) {
-          //Sql.SparkSql(strJson.toString())
-          println(strJson.toString())
-          //println(time /*"produced succeed"*/ )
-        } else println("produced failed")
+        if (StreamingProducer.producer(strJson.toString()) == true)
+          println(time + " : produced succeed - " + strJson.toString())
+        else
+          println("produced failed")
     }
   }
 }

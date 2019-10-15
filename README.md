@@ -15,8 +15,7 @@ or manually :
 ```
 
 ## Architecture
-
-### Project Architecture
+> ![Architecture](img/streaming-okt.png)
 
 **Note**
 To format Json to Java, it's using [Gson API](https://github.com/google/gson).

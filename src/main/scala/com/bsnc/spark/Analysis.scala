@@ -12,7 +12,7 @@ object Analysis {
   def wordAnalysis(msg: String) = {
     val parsed = JsonMethods.parse(msg).asInstanceOf[JObject].values
     parsed match {
-      case result =>
+      case result :Map[String, Any] =>
         val jsonMap = result.asInstanceOf[Map[String, String]]
         val subject = jsonMap.get("subject").getOrElse()
         val from = jsonMap.get("from").getOrElse()
@@ -20,7 +20,7 @@ object Analysis {
         val data: String = jsonMap.get("data").getOrElse("")
         val time = jsonMap.get("time").getOrElse()
         val now = System.currentTimeMillis()
-
+        
         val normalized: CharSequence = TwitterKoreanProcessor.normalize(data)
         //한국어를 처리하는 예시입니닼ㅋㅋㅋㅋㅋ -> 한국어를 처리하는 예시입니다 ㅋㅋ
         val tokens: Seq[KoreanToken] = TwitterKoreanProcessor.tokenize(normalized)

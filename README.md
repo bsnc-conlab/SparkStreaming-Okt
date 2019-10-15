@@ -1,4 +1,4 @@
-# Simple Was Server
+# Spark-Streaming with Korean Analysis
 
 ## Dependencies
 	* Scala 2.11.11
@@ -18,10 +18,7 @@ or manually :
 > ![Architecture](img/streaming-okt.png)
 
 **Note**
-To format Json to Java, it's using [Gson API](https://github.com/google/gson).
+To format Json to Scala, it's using [json4s API](https://github.com/json4s/json4s).
 
 ## LICENSE
-	Copyright (c) 2017 Worldline
-    License: GNU General Public License version 3, see COPYING
-
-
+	HD-BSNC
